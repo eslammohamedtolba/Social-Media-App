@@ -16,17 +16,25 @@
         <div class="profile">
             <a href="{% url 'home' %}">Home</a>
             <button class="profileButton" id="profileButton">
-                <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="Button Image">
+                {% if userprofile.image %}
+                    <img class="profileimage" src="{{ userprofile.image.url }}" alt="Button Image">
+                {% else %}
+                    <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="Button Image">
+                {% endif %}
             </button>
         </div>
         <div class="popup" id="popup">
             <span class="close" id="close">&times;</span>
             <a class="userprofile" href="#">
-                <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="">
+                {% if userprofile.image %}
+                    <img class="profileimage" src="{{ userprofile.image.url }}" alt="Button Image">
+                {% else %}
+                    <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="Button Image">
+                {% endif %}
                 <span class="popupprofile">Your profile</span>
             </a>
             <a class="popupSP" href="#">Settings & Privacy</a>
-            <a class="popupSP" href="#">Log Out</a>
+            <a class="popupSP" href="{% url 'ulogout' %}">Log Out</a>
         </div>
     </div>
     <script src="{% static 'js/navbar.js' %}"></script>

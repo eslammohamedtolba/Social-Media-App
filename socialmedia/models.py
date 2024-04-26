@@ -6,15 +6,22 @@ How imagefield works:
     - if the above step done after the terminal opened then close it and open new terminal 
 '''
 
-
 # Create your models here.
-class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
-    content = models.TextField()
-    image = models.ImageField(upload_to='post_images/%y/%m/%d', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    friends = models.ManyToManyField('self', blank=True)
+    quote = models.CharField(max_length=255, blank=True)
     def __str__(self):
-        return f'Post by {self.user.username}'
+        return self.user.username
+
+class Post(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+    content = models.TextField()
+    image = models.ImageField(upload_to='post_images/%Y/%m/%d', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.IntegerField(null=True)
+    def __str__(self):
+        return f'Post by {self.user_profile.user.username}'
     class Meta:
-        # Ordering the objects by this attribute
         ordering = ['-created_at']
