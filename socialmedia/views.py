@@ -53,7 +53,6 @@ def register(request):
 def home(request):
     # Find all posts
     all_posts = Post.objects.all()
-
     # Find all may friends
     UsEr = request.user
     user_profile = UserProfile.objects.filter(user=UsEr).first()
@@ -62,5 +61,23 @@ def home(request):
         all_mayusers = UserProfile.objects.exclude(user=user_profile.user).exclude(friends__in=user_friends)
     else:
         all_mayusers = None
-    context = {'posts':all_posts, 'mayfriends':all_mayusers, 'userprofile':user_profile}
+    context = {'posts':all_posts, 
+                'mayfriends':all_mayusers, 
+                'userprofile':user_profile}
     return render(request, 'socialmedia/home.html',context)
+
+@login_required
+def userProfile(request, pk):
+    # Find user profile
+    userpro = UserProfile.objects.get(id = pk)
+    # Find user posts
+    user_posts = Post.objects.filter(user_profile = userpro)
+    # Check if the user profile is the main profile
+    mainuser = request.user
+    main_profile = UserProfile.objects.filter(user=mainuser).first()
+    is_main_profile = (main_profile.id == int(pk))
+    context = {'userprofile':userpro,'posts':user_posts, 'is_main_profile':is_main_profile}
+    return render(request, 'socialmedia\profile.html', context)
+
+
+

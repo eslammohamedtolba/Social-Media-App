@@ -73,6 +73,7 @@ body {
     padding: 10px;
     font-size: 20px;
     border-width: 0;
+    cursor: pointer;
 }
 .post-section .posts .post {
     width: 100%;

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'css\home.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <div class="user-section">
-        <a href="#">
+        <a href="{% url 'useraccount' userprofile.id %}">
             {% if userprofile.image %}
                 <img class="userimage" src="{{ userprofile.image.url }}" alt="userprofile img">
             {% else %}
@@ -21,11 +21,11 @@
             <span class="popupprofile">{{userprofile.user.username}} Profile</span>
         </a>
         <a href="#">
-            <img class="friendsimage" src="{% static 'images\profile default image.png' %}" alt="">
+            <img class="friendsimage" src="{% static 'images\yourfriends.png' %}" alt="">
             <span class="popupprofile">your friends</span>
         </a>
         <a href="#">
-            <img class="postsimage" src="{% static 'images\profile default image.png' %}" alt="">
+            <img class="postsimage" src="{% static 'images\yourposts.png' %}" alt="">
             <span class="popupprofile">your posts</span>
         </a>
     </div>
@@ -46,7 +46,13 @@
                 {% for post in posts %}
                     <div class="post">
                         <div class="postheader">
-                            <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+                            <a href="{% url 'useraccount' post.user_profile.id %}">
+                                {% if post.user_profile.image %}
+                                    <img class="userimage" src="{{ post.user_profile.image.url }}" alt="userprofile img">
+                                {% else %}
+                                    <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="userprofile img">
+                                {% endif %}
+                            </a>
                             <div class="postInfo">
                                 <p class="name">{{post.user_profile.user.username}}</p>
                                 <p class="date">{{post.created_at}}</p>
@@ -83,7 +89,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <a href="#">View user</a>
+                    <a href="{% url 'useraccount' mayfriend.id %}">View user</a>
                 </div>
             {% endfor %}
         {% endif %}

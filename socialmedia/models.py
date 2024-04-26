@@ -10,6 +10,7 @@ How imagefield works:
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, null=True)
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    backgroundImage = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     friends = models.ManyToManyField('self', blank=True)
     quote = models.CharField(max_length=255, blank=True)
     def __str__(self):
