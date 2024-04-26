@@ -8,7 +8,7 @@ How imagefield works:
 
 # Create your models here.
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete = models.CASCADE, null=True)
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     friends = models.ManyToManyField('self', blank=True)
     quote = models.CharField(max_length=255, blank=True)
@@ -16,7 +16,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Post(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+    user_profile = models.ForeignKey(UserProfile, on_delete = models.CASCADE, null=True)
     content = models.TextField()
     image = models.ImageField(upload_to='post_images/%Y/%m/%d', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

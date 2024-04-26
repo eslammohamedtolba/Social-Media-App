@@ -57,8 +57,10 @@ def home(request):
     # Find all may friends
     UsEr = request.user
     user_profile = UserProfile.objects.filter(user=UsEr).first()
-    user_friends = user_profile.friends.all()
-    all_mayusers = UserProfile.objects.exclude(user=user_profile.user).exclude(friends__in=user_friends)
-
+    if user_profile is not None:
+        user_friends = user_profile.friends.all()
+        all_mayusers = UserProfile.objects.exclude(user=user_profile.user).exclude(friends__in=user_friends)
+    else:
+        all_mayusers = None
     context = {'posts':all_posts, 'mayfriends':all_mayusers, 'userprofile':user_profile}
     return render(request, 'socialmedia/home.html',context)

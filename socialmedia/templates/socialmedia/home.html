@@ -31,7 +31,11 @@
     </div>
     <div class="post-section">
         <div class="tocreatepost">
-            <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+            {% if userprofile.image %}
+                <img class="userimage" src="{{ userprofile.image.url }}" alt="userprofile img">
+            {% else %}
+                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+            {% endif %}
             <form action="#" method="post">
                 {% csrf_token %}
                 <input type="submit" value="What's on your Mind, {{userprofile.user.username}}?"/>
