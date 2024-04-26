@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    {% extends 'base.html' %}
+    {% load static %}
+</head>
+<body>
+    {% block basecontent %}
+    <link rel="stylesheet" href="{% static 'css\home.css' %}">
+    <div class="mainpage">
+        <div class="user-section">
+            <a href="#">
+                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+                <span class="popupprofile">Your profile</span>
+            </a>
+            <a href="#">
+                <img class="friendsimage" src="{% static 'images\profile default image.png' %}" alt="">
+                <span class="popupprofile">your friends</span>
+            </a>
+            <a href="#">
+                <img class="postsimage" src="{% static 'images\profile default image.png' %}" alt="">
+                <span class="popupprofile">your posts</span>
+            </a>
+        </div>
+        <div class="post-section">
+            <div class="tocreatepost">
+                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="What's on your Mind?">
+                </form>
+            </div>
+            <div class="posts">
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="post">
+                            <div class="postheader">
+                                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+                                <div class="postInfo">
+                                    <p class="name">{{post.user}}</p>
+                                    <p class="date">{{post.created_at}}</p>
+                                </div>
+                            </div>
+                            <p class="postContent">{{post.content}}</p>
+                            <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="friends-section">
+            <p class="mayfriendsheader">Friends you may know</p>
+            {% if mayfriends %}
+                {% for mayfriend in mayfriends %}
+                    <div class="mayfriend">
+                        <img src="{% url 'mayfriend.image' %}" alt="mayfriend img">
+                        <div class="mayfriendinfo">
+                            <p class="mayfriendname">{{mayfriend.name}}</p>
+                            <p class="mayfriendqoute">{{mayfriend.qoute}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {% endblock basecontent %}
+</body>
+</html>

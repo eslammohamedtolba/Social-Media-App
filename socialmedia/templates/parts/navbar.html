@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>navbar</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css\navbar.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="app">
+            <img class="appicon" src="{% static 'images\appicon.jpg' %}" alt="">
+            <p class="appname">Social Media App</p>
+        </div>
+        <div class="profile">
+            <a href="{% url 'home' %}">Home</a>
+            <button class="profileButton" id="profileButton">
+                <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="Button Image">
+            </button>
+        </div>
+        <div class="popup" id="popup">
+            <span class="close" id="close">&times;</span>
+            <a class="userprofile" href="#">
+                <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="">
+                <span class="popupprofile">Your profile</span>
+            </a>
+            <a class="popupSP" href="#">Settings & Privacy</a>
+            <a class="popupSP" href="#">Log Out</a>
+        </div>
+    </div>
+    <script src="{% static 'js/navbar.js' %}"></script>
+</body>
+</html>
