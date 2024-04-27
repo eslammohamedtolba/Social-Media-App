@@ -124,11 +124,11 @@ body {
     font-size: 20px;
     font-weight: 600;
 }
-.profilepopupBack form #fileUpload,
+/* .profilepopupBack form #fileUpload,
 .profilepopupFront form #fileUpload {
     margin-top: 5px;
     font-size: 15px;
-}
+} */
 .profilepopupBack form .submit,
 .profilepopupFront form .submit {
     padding: 5px;

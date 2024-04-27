@@ -85,7 +85,11 @@
                                 </div>
                             </div>
                             <p class="postContent">{{post.content}}</p>
-                            <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                            {% if post.image %}
+                                <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                            {% else %}
+                                <img class="postImage" src="{% static 'images\profile default image.png' %}" alt="Post image">
+                            {% endif %}
                             <button class="like-button" data-post-id="{{ post.id }}" data-likes="{{ post.likes }}">
                                 <i class="fas fa-heart"></i>
                                 <span class="like-count">{{ post.likes }}</span> likes

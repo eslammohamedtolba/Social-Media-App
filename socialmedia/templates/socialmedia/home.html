@@ -36,10 +36,20 @@
             {% else %}
                 <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
             {% endif %}
-            <form action="#" method="post">
-                {% csrf_token %}
-                <input type="submit" value="What's on your Mind, {{userprofile.user.username}}?"/>
-            </form>
+            <button id="postBotton" class="postBotton" href="#">
+                What's on your Mind, {{ userprofile.user.username }}?
+            </button>
+            <div class="postpopup" id="postpopup">
+                <span class="postclose" id="postclose">&times;</span>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="content">Post Content:</label>
+                    <textarea id="content" name="content" rows="4" cols="50" required></textarea>
+                    <label for="Postimage">Post image:</label>
+                    <input id="Postimage" type="file" name="Postimage" required>
+                    <input class="submit" type="submit" value="upload">
+                </form>
+            </div> 
         </div>
         <div class="posts">
             {% if posts %}
@@ -59,7 +69,11 @@
                             </div>
                         </div>
                         <p class="postContent">{{post.content}}</p>
-                        <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                        {% if post.image %}
+                            <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                        {% else %}
+                            <img class="postImage" src="{% static 'images\profile default image.png' %}" alt="Post image">
+                        {% endif %}
                         <button class="like-button" data-post-id="{{ post.id }}" data-likes="{{ post.likes }}">
                             <i class="fas fa-heart"></i>
                             <span class="like-count">{{ post.likes }}</span> likes

@@ -52,6 +52,13 @@ def register(request):
 @login_required
 def home(request):
     main_profile = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        postContent = request.POST.get('content')
+        postImage = request.FILES.get('Postimage')
+        # Create post for the entered post info
+        new_post = Post(user_profile=main_profile,content=postContent,image=postImage)
+        new_post.save()
+        return redirect('home')
     # Find all posts
     all_posts = Post.objects.filter(user_profile = main_profile) | Post.objects.filter(user_profile__in=main_profile.friends.all())
     all_posts = all_posts.order_by('-created_at')
@@ -108,7 +115,5 @@ def userProfile(request, pk):
                 'num_Friends':len(userpro.friends.all()),
                 'friends':userpro.friends.all()}
     return render(request, 'socialmedia\profile.html', context)
-
-
 
 
