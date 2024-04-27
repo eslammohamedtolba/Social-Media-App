@@ -101,26 +101,28 @@
             {% if is_main_profile and friends %}
                 <div class="friends">
                     <p class="friendsheader">Your friends</p>
-                    {% for friend in friends %}
-                        <div class="friend">
-                            <div class="friendprofile">
-                                {% if friend.image %}
-                                    <img src="{{ friend.image.url }}" alt="friend img">
-                                {% else %}
-                                    <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
-                                {% endif %}
-                                <div class="friendinfo">
-                                    <p class="friendname">{{friend.user.username}}</p>
-                                    {% if mayfriend.qoute %}
-                                        <p class="friendqoute">{{friend.qoute}}</p>
+                    <div class="all_friends">
+                        {% for friend in friends %}
+                            <div class="friend">
+                                <div class="friendprofile">
+                                    {% if friend.image %}
+                                        <img src="{{ friend.image.url }}" alt="friend img">
                                     {% else %}
-                                        <p class="friendqoute">friend qoute</p>
+                                        <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
                                     {% endif %}
+                                    <div class="friendinfo">
+                                        <p class="friendname">{{friend.user.username}}</p>
+                                        {% if mayfriend.qoute %}
+                                            <p class="friendqoute">{{friend.qoute}}</p>
+                                        {% else %}
+                                            <p class="friendqoute">friend qoute</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
+                                <a href="{% url 'useraccount' friend.id %}">View friend</a>
                             </div>
-                            <a href="{% url 'useraccount' friend.id %}">View friend</a>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </div>

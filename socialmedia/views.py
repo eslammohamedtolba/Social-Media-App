@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
+
 # Create your views here.
 def userlogin(request):
     if request.method == 'POST':
@@ -72,7 +72,7 @@ def home(request):
         recommended_profiles = None
     context = {'posts':all_posts, 
                 'mayfriends':recommended_profiles, 
-                'userprofile':main_profile}
+                'main_profile':main_profile}
     return render(request, 'socialmedia/home.html',context)
 
 @login_required
@@ -81,7 +81,7 @@ def userProfile(request, pk):
     userpro = UserProfile.objects.get(id=pk)
     # Find main user profile
     mainuser = request.user
-    main_profile = UserProfile.objects.filter(user=mainuser).first()
+    main_profile = UserProfile.objects.filter(user = mainuser).first()
     is_friend = main_profile.friends.filter(id = userpro.id).exists()
     # Check if the method is post
     if request.method == 'POST':
@@ -109,6 +109,7 @@ def userProfile(request, pk):
     user_posts = Post.objects.filter(user_profile=userpro)
     is_main_profile = (main_profile.id == int(pk))
     context = {'userprofile': userpro, 
+                'main_profile':main_profile,
                 'posts': user_posts, 
                 'is_main_profile': is_main_profile,
                 'is_friend':is_friend,

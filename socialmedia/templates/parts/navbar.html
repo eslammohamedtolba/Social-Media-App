@@ -16,8 +16,8 @@
         <div class="profile">
             <a href="{% url 'home' %}">Home</a>
             <button class="profileButton" id="profileButton">
-                {% if userprofile.image %}
-                    <img class="profileimage" src="{{ userprofile.image.url }}" alt="Button Image">
+                {% if main_profile.image %}
+                    <img class="profileimage" src="{{ main_profile.image.url }}" alt="Button Image">
                 {% else %}
                     <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="Button Image">
                 {% endif %}
@@ -26,8 +26,8 @@
         <div class="popup" id="popup">
             <span class="close" id="close">&times;</span>
             <a class="userprofile" href="#">
-                {% if userprofile.image %}
-                    <img class="profileimage" src="{{ userprofile.image.url }}" alt="Button Image">
+                {% if main_profile.image %}
+                    <img class="profileimage" src="{{ main_profile.image.url }}" alt="Button Image">
                 {% else %}
                     <img class="profileimage" src="{% static 'images\profile default image.png' %}" alt="Button Image">
                 {% endif %}
@@ -40,3 +40,5 @@
     <script src="{% static 'js/navbar.js' %}"></script>
 </body>
 </html>
+
+

@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="{% static 'css\home.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <div class="user-section">
-        <a href="{% url 'useraccount' userprofile.id %}">
-            {% if userprofile.image %}
-                <img class="userimage" src="{{ userprofile.image.url }}" alt="userprofile img">
+        <a href="{% url 'useraccount' main_profile.id %}">
+            {% if main_profile.image %}
+                <img class="userimage" src="{{ main_profile.image.url }}" alt="main_profile img">
             {% else %}
                 <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
             {% endif %}
-            <span class="popupprofile">{{userprofile.user.username}} Profile</span>
+            <span class="popupprofile">{{main_profile.user.username}} Profile</span>
         </a>
         <a href="#">
             <img class="friendsimage" src="{% static 'images\yourfriends.png' %}" alt="">
@@ -31,13 +31,13 @@
     </div>
     <div class="post-section">
         <div class="tocreatepost">
-            {% if userprofile.image %}
-                <img class="userimage" src="{{ userprofile.image.url }}" alt="userprofile img">
+            {% if main_profile.image %}
+                <img class="userimage" src="{{ main_profile.image.url }}" alt="main_profile img">
             {% else %}
                 <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
             {% endif %}
             <button id="postBotton" class="postBotton" href="#">
-                What's on your Mind, {{ userprofile.user.username }}?
+                What's on your Mind, {{ main_profile.user.username }}?
             </button>
             <div class="postpopup" id="postpopup">
                 <span class="postclose" id="postclose">&times;</span>
@@ -58,9 +58,9 @@
                         <div class="postheader">
                             <a href="{% url 'useraccount' post.user_profile.id %}">
                                 {% if post.user_profile.image %}
-                                    <img class="userimage" src="{{ post.user_profile.image.url }}" alt="userprofile img">
+                                    <img class="userimage" src="{{ post.user_profile.image.url }}" alt="post img">
                                 {% else %}
-                                    <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="userprofile img">
+                                    <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="post img">
                                 {% endif %}
                             </a>
                             <div class="postInfo">

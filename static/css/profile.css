@@ -218,7 +218,7 @@ body {
 
 
 .friends {
-    width: 22%;
+    width: 30%;
     position: absolute;
     top: 350px;
     right: 20px;
@@ -232,11 +232,16 @@ body {
     text-align: center;
     margin-bottom: 10px;
 }
+.relations .friends .all_friends {
+    background-color: #303030;
+    padding: 10px;
+    border-radius: 15px;
+}
 .friend {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-bottom: 15px;
 }
 .friend img {
     width: 40px;
