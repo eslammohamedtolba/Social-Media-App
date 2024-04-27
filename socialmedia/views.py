@@ -117,4 +117,33 @@ def userProfile(request, pk):
                 'friends':userpro.friends.all()}
     return render(request, 'socialmedia\profile.html', context)
 
+@login_required
+def setting_privacy(request):
+    # Find main user profile
+    mainuser = request.user
+    main_profile = UserProfile.objects.filter(user = mainuser).first()
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        qoute = request.POST.get('qoute')
+        # Check if the username exist or not
+        username_exists = False
+        for profile in UserProfile.objects.all():
+            if profile.user.username == username:
+                username_exists = True
+                break
+        if not username_exists:
+            main_profile.user.username = username
+        # Verify the password
+        if len(password) > 3:
+            main_profile.user.password = password
+        main_profile.user.email = email
+        main_profile.qoute = qoute
+        main_profile.user.save()
+        main_profile.save()
+        return redirect('setting_privacy')
+    context = {'main_profile':main_profile}
+    print(main_profile.qoute)
+    return render(request, 'socialmedia\setting_privacy.html', context)
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setting_privacy</title>
+    {% extends 'base.html' %}
+    {% load static %}
+</head>
+<body>
+    {% block basecontent %}
+    <link rel="stylesheet" href="{% static 'css\setting_privacy.css' %}">
+    <div class="container">
+        <p class="header">setting and privacy</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="username">
+                <label for="username">username:</label>
+                <input id="username" type="text" name="username" value="{{main_profile.user.username}}" required>
+            </div>
+            <div class="email">
+                <label for="email">email:</label>
+                <input id="email" type="email" name="email" value="{{main_profile.user.email}}" required>
+            </div>
+            <div class="password">
+                <label for="password">password:</label>
+                <input id="password" type="password" name="password" value="{{main_profile.user.password}}" required>
+            </div>
+            <div class="qoute">
+                <label for="qoute">qoute:</label>
+                <input id="qoute" type="text" name="qoute" value="{{main_profile.qoute}}" required>
+            </div>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    {% endblock basecontent %}
+</body>
+</html>

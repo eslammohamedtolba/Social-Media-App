@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     backgroundImage = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     friends = models.ManyToManyField('self', blank=True)
-    quote = models.CharField(max_length=255, blank=True)
+    qoute = models.CharField(max_length=255, blank=True, default='not qoute')
     def __str__(self):
         return self.user.username
 

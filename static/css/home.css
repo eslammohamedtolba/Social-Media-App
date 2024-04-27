@@ -60,9 +60,8 @@ body {
     width: 70px;
     height: 65px;
 }
-/*  */
 .post-section .tocreatepost .postBotton {
-    width: 350px;
+    width: auto;
     height: 45px;
     border-radius: 10px;
     border: 1px solid black;
@@ -120,8 +119,6 @@ body {
     bottom: 10px;
     right: 10px;
 }
-/*  */
-
 .post-section .posts .post {
     width: 100%;
     margin-bottom: 20px;
