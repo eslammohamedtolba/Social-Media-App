@@ -51,10 +51,11 @@ def register(request):
     
 @login_required
 def home(request):
-    # Find all posts
-    all_posts = Post.objects.all()
-    # Find all may friends
     main_profile = UserProfile.objects.get(user = request.user)
+    # Find all posts
+    all_posts = Post.objects.filter(user_profile = main_profile) | Post.objects.filter(user_profile__in=main_profile.friends.all())
+    all_posts = all_posts.order_by('-created_at')
+    # Find all may friends
     if main_profile is not None:
         current_friends = main_profile.friends.all()
         recommended_profiles = UserProfile.objects.exclude(id=main_profile.id)
@@ -107,5 +108,7 @@ def userProfile(request, pk):
                 'num_Friends':len(userpro.friends.all()),
                 'friends':userpro.friends.all()}
     return render(request, 'socialmedia\profile.html', context)
+
+
 
 
