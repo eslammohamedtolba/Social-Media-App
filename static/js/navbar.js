@@ -7,17 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation(); // Prevents the click event from propagating to the document
         togglePopup();
     });
-
     close.addEventListener('click', () => {
         togglePopup();
     });
-
     document.addEventListener('click', (e) => {
         if (popup.style.display === 'block' && !popup.contains(e.target) && e.target !== profileButton) {
             popup.style.display = 'none';
         }
     });
-
     function togglePopup() {
         popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }

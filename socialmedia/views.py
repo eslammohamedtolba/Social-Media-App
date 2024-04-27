@@ -54,30 +54,58 @@ def home(request):
     # Find all posts
     all_posts = Post.objects.all()
     # Find all may friends
-    UsEr = request.user
-    user_profile = UserProfile.objects.filter(user=UsEr).first()
-    if user_profile is not None:
-        user_friends = user_profile.friends.all()
-        all_mayusers = UserProfile.objects.exclude(user=user_profile.user).exclude(friends__in=user_friends)
+    main_profile = UserProfile.objects.get(user = request.user)
+    if main_profile is not None:
+        current_friends = main_profile.friends.all()
+        recommended_profiles = UserProfile.objects.exclude(id=main_profile.id)
+        for friend in current_friends:
+            recommended_profiles = recommended_profiles.exclude(id=friend.id)
     else:
-        all_mayusers = None
+        recommended_profiles = None
     context = {'posts':all_posts, 
-                'mayfriends':all_mayusers, 
-                'userprofile':user_profile}
+                'mayfriends':recommended_profiles, 
+                'userprofile':main_profile}
     return render(request, 'socialmedia/home.html',context)
 
 @login_required
 def userProfile(request, pk):
     # Find user profile
-    userpro = UserProfile.objects.get(id = pk)
-    # Find user posts
-    user_posts = Post.objects.filter(user_profile = userpro)
-    # Check if the user profile is the main profile
+    userpro = UserProfile.objects.get(id=pk)
+    # Find main user profile
     mainuser = request.user
     main_profile = UserProfile.objects.filter(user=mainuser).first()
+    is_friend = main_profile.friends.filter(id = userpro.id).exists()
+    # Check if the method is post
+    if request.method == 'POST':
+        form_type = request.POST.get('form_type')
+        if form_type == 'back':
+            background_image = request.FILES.get('BackgroundImage')
+            if background_image:
+                userpro.backgroundImage = background_image
+                userpro.save()
+        elif form_type == 'front':
+            profile_image = request.FILES.get('FrontImage')
+            if profile_image:
+                userpro.image = profile_image
+                userpro.save()
+        else:
+            # following button clicked then will
+            # Check if the user profile is a friend of the main profile
+            if not is_friend:
+                main_profile.friends.add(userpro)
+            else:
+                main_profile.friends.remove(userpro)
+            main_profile.save()
+        return redirect('useraccount', pk = userpro.id)
+    # Find posts
+    user_posts = Post.objects.filter(user_profile=userpro)
     is_main_profile = (main_profile.id == int(pk))
-    context = {'userprofile':userpro,'posts':user_posts, 'is_main_profile':is_main_profile}
+    context = {'userprofile': userpro, 
+                'posts': user_posts, 
+                'is_main_profile': is_main_profile,
+                'is_friend':is_friend,
+                'num_Friends':len(userpro.friends.all()),
+                'friends':userpro.friends.all()}
     return render(request, 'socialmedia\profile.html', context)
-
 
 

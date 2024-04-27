@@ -24,39 +24,105 @@
                 <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="userprofile img">
             {% endif %}
             <p class="name">{{userprofile.user.username}}</p>
-            {% if is_main_profile == False %}
-                <a href="#">Follow</a>
+            {% if is_main_profile %}
+                <button id="uploadBottonBack" class="uploadBottonBack" href="#">
+                    <img src="{% static 'images\uploadimage.png' %}" alt="">
+                </button>
+                <div class="profilepopupBack" id="profilepopupBack">
+                    <span class="profilecloseBack" id="profilecloseBack">&times;</span>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="back">
+                        <label for="fileUploadBack">Background image:</label>
+                        <input id="fileUploadBack" name="BackgroundImage" type="file" required>
+                        <input class="submit" type="submit" value="upload">
+                    </form>
+                </div>            
+                <button id="uploadBottonFront" class="uploadBottonFront" href="#">
+                    <img src="{% static 'images\uploadimage.png' %}" alt="">
+                </button>
+                <div class="profilepopupFront" id="profilepopupFront">
+                    <span class="profilecloseFront" id="profilecloseFront">&times;</span>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="front">
+                        <label for="fileUploadFront">Profile image:</label>
+                        <input id="fileUploadFront" name="FrontImage" type="file" required>
+                        <input class="submit" type="submit" value="upload">
+                    </form>
+                </div>                
+            {% else %}
+                <form class="following" action="" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">
+                        {% if is_friend %}
+                            Unfollowing
+                        {% else %}
+                            Following
+                        {% endif %}
+                    </button>
+                </form>
             {% endif %}
+            <p class="numberfollowings">{{num_Friends}} Friends</p>
         </div>
-        <div class="bodyposts">
-        {% if posts %}
-            {% for post in posts %}
-                <div class="post">
-                    <div class="postheader">
-                        <a href="{% url 'useraccount' post.user_profile.id %}">
-                            {% if post.user_profile.image %}
-                                <img class="userimage" src="{{ post.user_profile.image.url }}" alt="userprofile img">
-                            {% else %}
-                                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="userprofile img">
-                            {% endif %}
-                        </a>
-                        <div class="postInfo">
-                            <p class="name">{{post.user_profile.user.username}}</p>
-                            <p class="date">{{post.created_at}}</p>
+        <div class="relations">
+            {% if posts %}
+                <div class="posts">
+                    <p class="postssheader">Your Posts</p>
+                    {% for post in posts %}
+                        <div class="post">
+                            <div class="postheader">
+                                <a href="{% url 'useraccount' post.user_profile.id %}">
+                                    {% if post.user_profile.image %}
+                                        <img class="userimage" src="{{ post.user_profile.image.url }}" alt="userprofile img">
+                                    {% else %}
+                                        <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="userprofile img">
+                                    {% endif %}
+                                </a>
+                                <div class="postInfo">
+                                    <p class="name">{{post.user_profile.user.username}}</p>
+                                    <p class="date">{{post.created_at}}</p>
+                                </div>
+                            </div>
+                            <p class="postContent">{{post.content}}</p>
+                            <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                            <button class="like-button" data-post-id="{{ post.id }}" data-likes="{{ post.likes }}">
+                                <i class="fas fa-heart"></i>
+                                <span class="like-count">{{ post.likes }}</span> likes
+                            </button>                      
                         </div>
+                        {% endfor %}
                     </div>
-                    <p class="postContent">{{post.content}}</p>
-                    <img class="postImage" src="{{ post.image.url }}" alt="Post image">
-                    <button class="like-button" data-post-id="{{ post.id }}" data-likes="{{ post.likes }}">
-                        <i class="fas fa-heart"></i>
-                        <span class="like-count">{{ post.likes }}</span> likes
-                    </button>                      
+            {% endif %}
+            {% if is_main_profile and friends %}
+                <div class="friends">
+                    <p class="friendsheader">Your friends</p>
+                    {% for friend in friends %}
+                        <div class="friend">
+                            <div class="friendprofile">
+                                {% if friend.image %}
+                                    <img src="{{ friend.image.url }}" alt="friend img">
+                                {% else %}
+                                    <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
+                                {% endif %}
+                                <div class="friendinfo">
+                                    <p class="friendname">{{friend.user.username}}</p>
+                                    {% if mayfriend.qoute %}
+                                        <p class="friendqoute">{{friend.qoute}}</p>
+                                    {% else %}
+                                        <p class="friendqoute">friend qoute</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <a href="{% url 'useraccount' friend.id %}">View friend</a>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        {% endif %}
+            {% endif %}
         </div>
     </div>
     <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
     {% endblock basecontent %}
 </body>
 </html>
