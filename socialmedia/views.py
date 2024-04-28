@@ -88,6 +88,16 @@ def home(request):
                 Q(user__username__icontains=search_query) & ~Q(id=main_profile.id)
             )
             context['Searchedfriends'] = Searchedfriends
+        elif form_type == 'LikePost':
+            # Find clicked post
+            clicked_post_id = request.POST.get('post_id') 
+            clicked_post = Post.objects.get(id = int(clicked_post_id))
+            if clicked_post.likes.filter(id=main_profile.id).exists():
+                clicked_post.likes.remove(main_profile)
+            else:
+                clicked_post.likes.add(main_profile)
+            clicked_post.save()
+            return redirect('home')
     return render(request, 'socialmedia/home.html',context)
 
 @login_required
@@ -119,6 +129,15 @@ def userProfile(request, pk):
             else:
                 main_profile.friends.remove(userpro)
             main_profile.save()
+        elif form_type == 'LikePost':
+            # Find clicked post
+            clicked_post_id = request.POST.get('post_id') 
+            clicked_post = Post.objects.get(id = int(clicked_post_id))
+            if clicked_post.likes.filter(id=main_profile.id).exists():
+                clicked_post.likes.remove(main_profile)
+            else:
+                clicked_post.likes.add(main_profile)
+            clicked_post.save()
         return redirect('useraccount', pk = userpro.id)
     # Find posts
     user_posts = Post.objects.filter(user_profile=userpro)
@@ -157,8 +176,9 @@ def setting_privacy(request):
         main_profile.qoute = qoute
         main_profile.user.save()
         main_profile.save()
-        return redirect('setting_privacy')
+        return redirect('home')
     context = {'main_profile':main_profile}
     return render(request, 'socialmedia\setting_privacy.html', context)
+
 
 

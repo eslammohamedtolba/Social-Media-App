@@ -146,7 +146,15 @@ body {
     top: 196px;
     right: 160px;
 }
-
+.container .headerinfo .qoute {
+    position: absolute;
+    top: 105%;
+    width: 500px;
+    height: auto;
+    left: 24%;
+    color: white;
+    font-size: 20px;
+}
 
 .container .relations {
     width: 100%;
@@ -206,13 +214,18 @@ body {
 .relations .post img {
     width: 100%;
 }
-.relations .post .like-button {
+.relations .post .like-button,
+.relations .post .like-button.liked {
     padding: 7px;
     border-radius: 6px;
     border-width: 0;
     margin: 12px;
     font-size: 15px;
     cursor: pointer;
+}
+.relations .post .like-button.liked {
+    background-color: rgb(50, 50, 166);
+    color: white; 
 }
 
 
@@ -243,6 +256,11 @@ body {
     justify-content: space-between;
     margin-bottom: 15px;
 }
+.friends .all_friends .friend .friendprofile {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
 .friend img {
     width: 40px;
     height: 40px;
@@ -259,6 +277,7 @@ body {
 }
 .friend .friendinfo .friendqoute {
     font-size: 12px;
+    width: 280px;
 }
 .friend a {
     height: 40px;
