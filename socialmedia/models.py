@@ -1,10 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-'''
-How imagefield works:
-    - work by conda python interpreter (ctrl + shift + p), choose conda base interpreter
-    - if the above step done after the terminal opened then close it and open new terminal 
-'''
 
 # Create your models here.
 class UserProfile(models.Model):
