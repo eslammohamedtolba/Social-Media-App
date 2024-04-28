@@ -54,6 +54,7 @@
             {% else %}
                 <form class="following" action="" method="post">
                     {% csrf_token %}
+                    <input type="hidden" name="form_type" value="followbutton">
                     <button type="submit" class="link-button">
                         {% if is_friend %}
                             Unfollowing

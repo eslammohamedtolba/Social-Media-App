@@ -18,16 +18,41 @@
             {% else %}
                 <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
             {% endif %}
-            <span class="popupprofile">{{main_profile.user.username}} Profile</span>
+            <span class="ProfileUsername">{{main_profile.user.username}} Profile</span>
         </a>
-        <a href="#">
-            <img class="friendsimage" src="{% static 'images\yourfriends.png' %}" alt="">
-            <span class="popupprofile">your friends</span>
-        </a>
-        <a href="#">
-            <img class="postsimage" src="{% static 'images\yourposts.png' %}" alt="">
-            <span class="popupprofile">your posts</span>
-        </a>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="SearchFriends">
+            <label for="Search" class="SearchLabel">Search for Friends</label>
+            <input class="SearchInput" id="Search" type="text" name="search_query" placeholder="Search friends..." required>
+            <button type="submit" id="SearchFriendsButton">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+        <div class="Searchpopup" id="Searchpopup">
+        {% if Searchedfriends %}
+            {% for mayfriend in Searchedfriends %}
+                <div class="mayfriend">
+                    <div class="mayfriendprofile">
+                        {% if mayfriend.image %}
+                            <img src="{{ mayfriend.image.url }}" alt="mayfriend img">
+                        {% else %}
+                            <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
+                        {% endif %}
+                        <div class="mayfriendinfo">
+                            <p class="mayfriendname">{{mayfriend.user.username}}</p>
+                            {% if mayfriend.qoute %}
+                                <p class="mayfriendqoute">{{mayfriend.qoute}}</p>
+                            {% else %}
+                                <p class="mayfriendqoute">May friend qoute</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a href="{% url 'useraccount' mayfriend.id %}">View user</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
     </div>
     <div class="post-section">
         <div class="tocreatepost">
@@ -43,6 +68,7 @@
                 <span class="postclose" id="postclose">&times;</span>
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <input type="hidden" name="form_type" value="CreatedPost">
                     <label for="content">Post Content:</label>
                     <textarea id="content" name="content" rows="4" cols="50" required></textarea>
                     <label for="Postimage">Post image:</label>

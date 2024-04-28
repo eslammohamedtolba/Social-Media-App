@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Post, UserProfile
+# Q enables us to search about the usernames of friends in the database
+from django.db.models import Q 
 # Import authentication libraries
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -53,16 +55,19 @@ def register(request):
 def home(request):
     main_profile = UserProfile.objects.get(user = request.user)
     if request.method == 'POST':
-        postContent = request.POST.get('content')
-        postImage = request.FILES.get('Postimage')
-        # Create post for the entered post info
-        new_post = Post(user_profile=main_profile,content=postContent,image=postImage)
-        new_post.save()
-        return redirect('home')
+        form_type = request.POST.get('form_type')
+        if form_type == 'CreatedPost':
+            postContent = request.POST.get('content')
+            postImage = request.FILES.get('Postimage')
+            # Create post for the entered post info
+            new_post = Post(user_profile=main_profile,content=postContent,image=postImage)
+            new_post.save()
+            return redirect('home')
+        
     # Find all posts
     all_posts = Post.objects.filter(user_profile = main_profile) | Post.objects.filter(user_profile__in=main_profile.friends.all())
     all_posts = all_posts.order_by('-created_at')
-    # Find all may friends
+    # Find all recommended friends
     if main_profile is not None:
         current_friends = main_profile.friends.all()
         recommended_profiles = UserProfile.objects.exclude(id=main_profile.id)
@@ -73,6 +78,16 @@ def home(request):
     context = {'posts':all_posts, 
                 'mayfriends':recommended_profiles, 
                 'main_profile':main_profile}
+    
+    if request.method == 'POST':
+        form_type = request.POST.get('form_type')
+        if form_type == 'SearchFriends':
+            # Find all friends whose usernames is similar to the query 
+            search_query = request.POST.get('search_query')
+            Searchedfriends = UserProfile.objects.filter(
+                Q(user__username__icontains=search_query) & ~Q(id=main_profile.id)
+            )
+            context['Searchedfriends'] = Searchedfriends
     return render(request, 'socialmedia/home.html',context)
 
 @login_required
@@ -96,7 +111,7 @@ def userProfile(request, pk):
             if profile_image:
                 userpro.image = profile_image
                 userpro.save()
-        else:
+        elif form_type == 'followbutton':
             # following button clicked then will
             # Check if the user profile is a friend of the main profile
             if not is_friend:
@@ -110,8 +125,8 @@ def userProfile(request, pk):
     is_main_profile = (main_profile.id == int(pk))
     context = {'userprofile': userpro, 
                 'main_profile':main_profile,
-                'posts': user_posts, 
                 'is_main_profile': is_main_profile,
+                'posts': user_posts, 
                 'is_friend':is_friend,
                 'num_Friends':len(userpro.friends.all()),
                 'friends':userpro.friends.all()}
@@ -144,6 +159,6 @@ def setting_privacy(request):
         main_profile.save()
         return redirect('setting_privacy')
     context = {'main_profile':main_profile}
-    print(main_profile.qoute)
     return render(request, 'socialmedia\setting_privacy.html', context)
+
 
