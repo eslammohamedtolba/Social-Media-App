@@ -1,152 +1,143 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    {% extends 'base.html' %}
-    {% load static %}
-</head>
-<body>
-    {% block basecontent %}
-    <link rel="stylesheet" href="{% static 'css\home.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <div class="user-section">
-        <a href="{% url 'useraccount' main_profile.id %}">
-            {% if main_profile.image %}
-                <img class="userimage" src="{{ main_profile.image.url }}" alt="main_profile img">
-            {% else %}
-                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
-            {% endif %}
-            <span class="ProfileUsername">{{main_profile.user.username}} Profile</span>
-        </a>
-        <form action="" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="form_type" value="SearchFriends">
-            <label for="Search" class="SearchLabel">Search for Friends</label>
-            <input class="SearchInput" id="Search" type="text" name="search_query" placeholder="Search friends..." required>
-            <button type="submit" id="SearchFriendsButton">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
-        <div class="Searchpopup" id="Searchpopup">
-        {% if Searchedfriends %}
-            {% for mayfriend in Searchedfriends %}
-                <div class="mayfriend">
-                    <div class="mayfriendprofile">
-                        {% if mayfriend.image %}
-                            <img src="{{ mayfriend.image.url }}" alt="mayfriend img">
-                        {% else %}
-                            <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
-                        {% endif %}
-                        <div class="mayfriendinfo">
-                            <p class="mayfriendname">{{mayfriend.user.username}}</p>
-                            {% if mayfriend.qoute %}
-                                <p class="mayfriendqoute">{{mayfriend.qoute}}</p>
-                            {% else %}
-                                <p class="mayfriendqoute">May friend qoute</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <a href="{% url 'useraccount' mayfriend.id %}">View user</a>
-                </div>
-            {% endfor %}
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}Home{% endblock %}</title>
+{% block basecontent %}
+<link rel="stylesheet" href="{% static 'css\home.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div class="user-section">
+    <a href="{% url 'useraccount' main_profile.id %}">
+        {% if main_profile.image %}
+            <img class="userimage" src="{{ main_profile.image.url }}" alt="main_profile img">
+        {% else %}
+            <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
         {% endif %}
-        </div>
-    </div>
-    <div class="post-section">
-        <div class="tocreatepost">
-            {% if main_profile.image %}
-                <img class="userimage" src="{{ main_profile.image.url }}" alt="main_profile img">
-            {% else %}
-                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
-            {% endif %}
-            <button id="postBotton" class="postBotton" href="#">
-                What's on your Mind, {{ main_profile.user.username }}?
-            </button>
-            <div class="postpopup" id="postpopup">
-                <span class="postclose" id="postclose">&times;</span>
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="hidden" name="form_type" value="CreatedPost">
-                    <label for="content">Post Content:</label>
-                    <textarea id="content" name="content" rows="4" cols="50" required></textarea>
-                    <label for="Postimage">Post image:</label>
-                    <input id="Postimage" type="file" name="Postimage" required>
-                    <input class="submit" type="submit" value="upload">
-                </form>
-            </div> 
-        </div>
-        <div class="posts">
-            {% if posts %}
-                {% for post in posts %}
-                    <div class="post">
-                        <div class="postheader">
-                            <a href="{% url 'useraccount' post.user_profile.id %}">
-                                {% if post.user_profile.image %}
-                                    <img class="userimage" src="{{ post.user_profile.image.url }}" alt="post img">
-                                {% else %}
-                                    <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="post img">
-                                {% endif %}
-                            </a>
-                            <div class="postInfo">
-                                <p class="name">{{post.user_profile.user.username}}</p>
-                                <p class="date">{{post.created_at}}</p>
-                            </div>
-                        </div>
-                        <p class="postContent">{{post.content}}</p>
-                        {% if post.image %}
-                            <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+        <span class="ProfileUsername">{{main_profile.user.username}} Profile</span>
+    </a>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="SearchFriends">
+        <label for="Search" class="SearchLabel">Search for Friends</label>
+        <input class="SearchInput" id="Search" type="text" name="search_query" placeholder="Search friends..." required>
+        <button type="submit" id="SearchFriendsButton">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+    <div class="Searchpopup" id="Searchpopup">
+    {% if Searchedfriends %}
+        {% for mayfriend in Searchedfriends %}
+            <div class="mayfriend">
+                <div class="mayfriendprofile">
+                    {% if mayfriend.image %}
+                        <img src="{{ mayfriend.image.url }}" alt="mayfriend img">
+                    {% else %}
+                        <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
+                    {% endif %}
+                    <div class="mayfriendinfo">
+                        <p class="mayfriendname">{{mayfriend.user.username}}</p>
+                        {% if mayfriend.qoute %}
+                            <p class="mayfriendqoute">{{mayfriend.qoute}}</p>
                         {% else %}
-                            <img class="postImage" src="{% static 'images\profile default image.png' %}" alt="Post image">
+                            <p class="mayfriendqoute">May friend qoute</p>
                         {% endif %}
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="form_type" value="LikePost"> 
-                            <input type="hidden" name="post_id" value="{{ post.id }}"> 
-                            {% if main_profile in post.likes.all %}
-                                <button class="like-button liked" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}">
-                                    <i class="fas fa-heart"></i>
-                                    <span class="like-count">{{ post.likes.count }}</span> likes
-                                </button>
-                            {% else %}
-                                <button class="like-button" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}">
-                                    <i class="fas fa-heart"></i>
-                                    <span class="like-count">{{ post.likes.count }}</span> likes
-                                </button>
-                            {% endif %}                     
-                        </form>
                     </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+                </div>
+                <a href="{% url 'useraccount' mayfriend.id %}">View user</a>
+            </div>
+        {% endfor %}
+    {% endif %}
     </div>
-    <div class="friends-section">
-        <p class="mayfriendsheader">Users you may know</p>
-        {% if mayfriends %}
-            {% for mayfriend in mayfriends %}
-                <div class="mayfriend">
-                    <div class="mayfriendprofile">
-                        {% if mayfriend.image %}
-                            <img src="{{ mayfriend.image.url }}" alt="mayfriend img">
-                        {% else %}
-                            <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
-                        {% endif %}
-                        <div class="mayfriendinfo">
-                            <p class="mayfriendname">{{mayfriend.user.username}}</p>
-                            {% if mayfriend.qoute %}
-                                <p class="mayfriendqoute">{{mayfriend.qoute}}</p>
+</div>
+<div class="post-section">
+    <div class="tocreatepost">
+        {% if main_profile.image %}
+            <img class="userimage" src="{{ main_profile.image.url }}" alt="main_profile img">
+        {% else %}
+            <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="">
+        {% endif %}
+        <button id="postBotton" class="postBotton" href="#">
+            What's on your Mind, {{ main_profile.user.username }}?
+        </button>
+        <div class="postpopup" id="postpopup">
+            <span class="postclose" id="postclose">&times;</span>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="CreatedPost">
+                <label for="content">Post Content:</label>
+                <textarea id="content" name="content" rows="4" cols="50" required></textarea>
+                <label for="Postimage">Post image:</label>
+                <input id="Postimage" type="file" name="Postimage" required>
+                <input class="submit" type="submit" value="upload">
+            </form>
+        </div> 
+    </div>
+    <div class="posts">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post">
+                    <div class="postheader">
+                        <a href="{% url 'useraccount' post.user_profile.id %}">
+                            {% if post.user_profile.image %}
+                                <img class="userimage" src="{{ post.user_profile.image.url }}" alt="post img">
                             {% else %}
-                                <p class="mayfriendqoute">May friend qoute</p>
+                                <img class="userimage" src="{% static 'images\profile default image.png' %}" alt="post img">
                             {% endif %}
+                        </a>
+                        <div class="postInfo">
+                            <p class="name">{{post.user_profile.user.username}}</p>
+                            <p class="date">{{post.created_at}}</p>
                         </div>
                     </div>
-                    <a href="{% url 'useraccount' mayfriend.id %}">View user</a>
+                    <p class="postContent">{{post.content}}</p>
+                    {% if post.image %}
+                        <img class="postImage" src="{{ post.image.url }}" alt="Post image">
+                    {% else %}
+                        <img class="postImage" src="{% static 'images\profile default image.png' %}" alt="Post image">
+                    {% endif %}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="LikePost"> 
+                        <input type="hidden" name="post_id" value="{{ post.id }}"> 
+                        {% if main_profile in post.likes.all %}
+                            <button class="like-button liked" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}">
+                                <i class="fas fa-heart"></i>
+                                <span class="like-count">{{ post.likes.count }}</span> likes
+                            </button>
+                        {% else %}
+                            <button class="like-button" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}">
+                                <i class="fas fa-heart"></i>
+                                <span class="like-count">{{ post.likes.count }}</span> likes
+                            </button>
+                        {% endif %}                     
+                    </form>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
-    <script src="{% static 'js/home.js' %}"></script>
-    {% endblock basecontent %}
-</body>
-</html>
+</div>
+<div class="friends-section">
+    <p class="mayfriendsheader">Users you may know</p>
+    {% if mayfriends %}
+        {% for mayfriend in mayfriends %}
+            <div class="mayfriend">
+                <div class="mayfriendprofile">
+                    {% if mayfriend.image %}
+                        <img src="{{ mayfriend.image.url }}" alt="mayfriend img">
+                    {% else %}
+                        <img src="{% static 'images\profile default image.png' %}" alt="mayfriend img">
+                    {% endif %}
+                    <div class="mayfriendinfo">
+                        <p class="mayfriendname">{{mayfriend.user.username}}</p>
+                        {% if mayfriend.qoute %}
+                            <p class="mayfriendqoute">{{mayfriend.qoute}}</p>
+                        {% else %}
+                            <p class="mayfriendqoute">May friend qoute</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'useraccount' mayfriend.id %}">View user</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock basecontent %}

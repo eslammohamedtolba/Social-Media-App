@@ -16,7 +16,7 @@ class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to='post_images/%Y/%m/%d', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    likes = likes = models.ManyToManyField(UserProfile, related_name='liked_posts', null=True, blank=True)
+    likes = likes = models.ManyToManyField(UserProfile, related_name='liked_posts', blank=True)
     def __str__(self):
         return f'Post by {self.user_profile.user.username}'
     class Meta:
